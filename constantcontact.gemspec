@@ -2,10 +2,11 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'constantcontact/version'
 
 Gem::Specification.new do |s|
   s.name = "constantcontact"
-  s.version = '1.3.2'
+  s.version = ConstantContact::SDK::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ["ConstantContact"]
   s.homepage = "http://www.constantcontact.com"
@@ -20,12 +21,11 @@ Gem::Specification.new do |s|
     'README.md'
   ]
   s.files += Dir['lib/**/*.rb']
+  s.files += Dir['spec/**/*.rb']
   s.executables = []
-  s.require_paths = [ "lib" ]
-  s.test_files = Dir['spec/**/*_spec.rb']
-  
-  s.add_runtime_dependency("rest-client", '~> 1.6', '>= 1.6.7')
-  s.add_runtime_dependency("json", '~> 1.8', '>= 1.8.1')
-  s.add_runtime_dependency('mime-types', '~> 1.25', '>= 1.25.1')
-  s.add_development_dependency("rspec", '~> 2.14')
+  s.require_paths = [ "lib", "spec" ]
+
+  s.add_dependency("rest-client")
+  s.add_dependency("json")
+  s.add_development_dependency("rspec")
 end

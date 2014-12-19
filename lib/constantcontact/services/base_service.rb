@@ -12,54 +12,21 @@ module ConstantContact
 
         protected
 
-        # Return required headers for making an http request with Constant Contact
+        # Helper function to return required headers for making an http request with constant contact
         # @param [String] access_token - OAuth2 access token to be placed into the Authorization header
-        # @param [String] content_type - The MIME type of the body of the request, default is 'application/json'
         # @return [Hash] - authorization headers
-        def get_headers(access_token, content_type = 'application/json')
+        def get_headers(access_token)
           {
-            :content_type   => content_type,
+            :content_type   => 'application/json',
             :accept         => 'application/json',
-            :authorization  => "Bearer #{access_token}",
-            :user_agent     => "AppConnect Ruby SDK v#{ConstantContact::SDK::VERSION} (#{RUBY_DESCRIPTION})",
-            :x_ctct_request_source => "sdk.ruby.#{ConstantContact::SDK::VERSION}"
+            :authorization  => "Bearer #{access_token}"
           }
         end
 
 
-        # returns the id of a ConstantContact component
-        def get_id_for(obj)
-          if obj.kind_of? ConstantContact::Components::Component
-            obj.id
-          elsif obj.kind_of? Hash
-            obj["id"]
-          else
-            obj
-          end
-        end
-
-
-        # Build a url from the base url and query parameters hash. Query parameters
-        # should not be URL encoded because this method will handle that
-        # @param [String] url - The base url
-        # @param [Hash] params - A hash with query parameters
-        # @return [String] - the url with query parameters hash 
+        # Build a url from the base url and query parameters hash
         def build_url(url, params = nil)
-          if params.respond_to? :each
-            params.each do |key, value|
-              # Convert dates to CC date format
-              if value.respond_to? :iso8601
-                params[key] = value.iso8601
-              end
-
-              if key.to_s == 'next' && value.match(/^.*?next=(.*)$/)
-                params[key] = $1
-              end
-            end
-          else
-            params ||= {}
-          end
-
+          params = {} if !params
           params['api_key'] = BaseService.api_key
           url += '?' + Util::Helpers.http_build_query(params)
         end
