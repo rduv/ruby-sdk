@@ -7,7 +7,7 @@
 module ConstantContact
   module Components
     class Address < Component
-      attr_accessor :id, :line1, :line2, :line3, :city, :address_type, :state_code,
+      attr_accessor :id, :line1, :line2, :line3, :city, :address_type, :state_code, :state,
                     :country_code, :postal_code, :sub_postal_code
 
 			# Factory method to create an Address object from a json string
